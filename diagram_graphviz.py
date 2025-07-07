@@ -14,7 +14,7 @@ def get_visibility(name: str) -> str:
 
 def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
     dot = Digraph(comment="UML Class Diagram", format="png")
-    dot.attr(rankdir="LR")  # Horizontal layout (like UML)
+    dot.attr(rankdir="LR")  # Horizontal layout
 
     # 🎨 Theme configuration
     if theme == "dark":
@@ -29,6 +29,7 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
         }
         edge_color = "#ffffff"
         comp_color = "#ff79c6"
+        agg_color = "#999999"
     else:  # light
         node_attrs = {
             "shape": "record",
@@ -41,10 +42,11 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
         }
         edge_color = "#2E8B57"
         comp_color = "#B22222"
+        agg_color = "#999999"
 
     dot.attr("node", **node_attrs)
 
-    # ➕ Classes
+    # ➕ Class boxes
     for cls in classes.values():
         attr_lines = [get_visibility(attr) for attr in cls.attributes]
         method_lines = [get_visibility(method) + "()" for method in cls.methods]
@@ -53,6 +55,7 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
 
     # ➕ Relationships
     for cls in classes.values():
+        # Inheritance
         for base in cls.bases:
             if base in classes:
                 dot.edge(base, cls.name,
@@ -60,14 +63,29 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
                          color=edge_color,
                          penwidth="2")
 
+        # Composition (filled diamond)
         for comp in cls.compositions:
             if comp in classes:
                 dot.edge(cls.name, comp,
-                         style="dashed",
+                         arrowtail="diamond",
+                         dir="back",
                          color=comp_color,
-                         label="uses",
+                         label="composes",
                          fontname="Helvetica",
                          fontsize="9")
 
+        # Aggregation (hollow diamond)
+        if hasattr(cls, "aggregations"):
+            for agg in cls.aggregations:
+                if agg in classes:
+                    dot.edge(cls.name, agg,
+                             arrowtail="odiamond",
+                             dir="back",
+                             color=agg_color,
+                             label="has-a",
+                             fontname="Helvetica",
+                             fontsize="9")
+
     # ➕ Render diagram to .png
     dot.render(output_file, view=True)
+

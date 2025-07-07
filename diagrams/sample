@@ -1,0 +1,14 @@
+// UML Class Diagram as DOT string
+const umlDot = `
+digraph {
+	rankdir=LR
+	node [color="#4682B4" fillcolor="#F0F8FF" fontcolor=black fontname=Helvetica fontsize=10 shape=record style=filled]
+	Engine [label="{Engine||+start()\l}"]
+	Driver [label="{Driver||+drive()\l}"]
+	Vehicle [label="{Vehicle||+move()\l}"]
+	Car [label="{Car|+engine\l+driver|#__init__()\l+start_car()\l}"]
+	Vehicle -> Car [arrowhead=onormal color="#2E8B57" penwidth=2]
+	Car -> Engine [label=composes arrowtail=diamond color="#B22222" dir=back fontname=Helvetica fontsize=9]
+	Car -> Driver [label="has-a" arrowtail=odiamond color="#999999" dir=back fontname=Helvetica fontsize=9]
+}
+`;
