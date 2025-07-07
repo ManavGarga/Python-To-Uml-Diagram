@@ -1,25 +1,26 @@
-import os
 from parser import UMLParser
 from diagram_graphviz import render_graphviz
+import os
+import sys
 
 def main():
-    import sys
-    if len(sys.argv) != 2:
-        print("Usage: python uml_generator.py <your_script.py>")
+    if len(sys.argv) < 2:
+        print("Usage: python uml_generator.py <your_script.py> [light|dark]")
         return
 
     input_file = sys.argv[1]
-    base_name = os.path.splitext(os.path.basename(input_file))[0]  # e.g., "student_management_system"
-    output_dir = "diagrams"
-    os.makedirs(output_dir, exist_ok=True)  # create diagrams/ if it doesn't exist
+    theme = sys.argv[2] if len(sys.argv) > 2 else "light"
 
+    base_name = os.path.splitext(os.path.basename(input_file))[0]
+    output_dir = "diagrams"
+    os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, base_name)
 
     parser = UMLParser()
     classes = parser.parse(input_file)
-
-    render_graphviz(classes, output_file=output_path)  # creates diagrams/student_management_system.png
+    render_graphviz(classes, output_file=output_path, theme=theme)
 
 if __name__ == "__main__":
     main()
+
 
