@@ -1,10 +1,22 @@
 from graphviz import Digraph
 
+def get_visibility(name: str) -> str:
+    """
+    Returns UML visibility symbol based on Python naming conventions:
+    + public, # protected, - private
+    """
+    if name.startswith("__") and not name.endswith("__"):
+        return "-" + name  # private
+    elif name.startswith("_"):
+        return "#" + name  # protected
+    else:
+        return "+" + name  # public
+
 def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
     dot = Digraph(comment="UML Class Diagram", format="png")
-    dot.attr(rankdir="LR")  # horizontal layout
+    dot.attr(rankdir="LR")  # Horizontal layout (like UML)
 
-    # 🎨 Theme styles
+    # 🎨 Theme configuration
     if theme == "dark":
         node_attrs = {
             "shape": "record",
@@ -32,12 +44,14 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
 
     dot.attr("node", **node_attrs)
 
-    # ✅ Class Boxes
+    # ➕ Classes
     for cls in classes.values():
-        label = f"{{{cls.name}|{'\\l'.join(cls.attributes)}|{'\\l'.join(cls.methods)}\\l}}"
+        attr_lines = [get_visibility(attr) for attr in cls.attributes]
+        method_lines = [get_visibility(method) + "()" for method in cls.methods]
+        label = f"{{{cls.name}|{'\\l'.join(attr_lines)}|{'\\l'.join(method_lines)}\\l}}"
         dot.node(cls.name, label=label)
 
-    # ✅ Relationships
+    # ➕ Relationships
     for cls in classes.values():
         for base in cls.bases:
             if base in classes:
@@ -55,6 +69,5 @@ def render_graphviz(classes: dict, output_file="uml_diagram", theme="light"):
                          fontname="Helvetica",
                          fontsize="9")
 
+    # ➕ Render diagram to .png
     dot.render(output_file, view=True)
-
-
