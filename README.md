@@ -27,7 +27,7 @@ class Car(Vehicle):
 
 Produces this diagram:
 
-![UML Example](diagrams/car_system.png)
+![UML Example](diagrams/sample.png)
 
 > The output diagram is saved in the `diagrams/` folder.
 
@@ -67,13 +67,13 @@ pip install graphviz
 python-to-uml-diagram/
 │
 ├── examples/
-│   └── car_system.py              # Sample input
+│   └── sample.py              # Sample input
 ├── model.py                       # ClassInfo model
 ├── parser.py                      # AST-based parser
 ├── diagram_graphviz.py            # Renders Graphviz UML
 ├── uml_generator.py               # CLI runner
 ├── diagrams/
-│   └── car_system.png             # Output image
+│   └── sample.png             # Output image
 └── README.md
 ```
 
@@ -82,7 +82,7 @@ python-to-uml-diagram/
 ## ⚙️ Usage
 
 ```bash
-python uml_generator.py examples/car_system.py light
+python uml_generator.py examples/sample.py light
 ```
 
 ### CLI Options
