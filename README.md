@@ -27,7 +27,9 @@ class Car(Vehicle):
 
 Produces this diagram:
 
-![UML Example](uml_diagram.png)
+![UML Example](diagrams/car_system.png)
+
+> The output diagram is saved in the `diagrams/` folder.
 
 ---
 
@@ -70,7 +72,8 @@ python-to-uml-diagram/
 ├── parser.py                      # AST-based parser
 ├── diagram_graphviz.py            # Renders Graphviz UML
 ├── uml_generator.py               # CLI runner
-├── uml_diagram.png                # Output image
+├── diagrams/
+│   └── car_system.png             # Output image
 └── README.md
 ```
 
@@ -82,9 +85,15 @@ python-to-uml-diagram/
 python uml_generator.py examples/car_system.py light
 ```
 
-Options:
-- `light` or `dark` — for theme
-- Output: `uml_diagram.png` (opens automatically)
+### CLI Options
+
+```bash
+python uml_generator.py <input_file> [light|dark]
+```
+
+- `input_file`: Python file to parse
+- `light|dark`: Optional theme for output (default is `light`)
+- Output: `diagrams/<input_file_name>.png` (auto-opens)
 
 ---
 
@@ -99,13 +108,14 @@ Options:
 
 ---
 
-## 🔧 TODO (optional extensions)
+## 🔧 Future Enhancements
 
-- [ ] Handle classmethod / staticmethod
-- [ ] Show `__init__` parameters
-- [ ] Support module/package-level grouping
-- [ ] Export as `.svg` or embed in HTML
-- [ ] Web UI
+- [ ] Parse type hints for accurate aggregation
+- [ ] Detect class/static methods (e.g., `@staticmethod`)
+- [ ] Show constructor parameters (`__init__` args)
+- [ ] Group classes by module or package
+- [ ] Export diagrams as SVG or HTML
+- [ ] Web-based UI with upload & preview
 
 ---
 
@@ -114,4 +124,5 @@ Options:
 MIT License.  
 Author: Manav Garg
 
-
+![Python](https://img.shields.io/badge/python-3.8+-blue)
+![Graphviz](https://img.shields.io/badge/graphviz-enabled-brightgreen)
